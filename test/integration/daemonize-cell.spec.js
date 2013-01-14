@@ -9,7 +9,7 @@ describe("Tissue", function(){
   var daemonCell;
 
   var spawnOptions = {
-    target: path.normalize(__dirname+"/../data/daemonCell.js"),
+    target: path.normalize(__dirname+"/../data/daemonCell.js")
   }
   var getUserHome = function() {
     return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
@@ -24,11 +24,31 @@ describe("Tissue", function(){
       setTimeout(function(){
         var pid = mockGetCellMarker("daemons", spawnOptions.target, daemonCell.pid);
         expect(fs.existsSync(pid)).toBe(true);
+        expect(fs.existsSync(path.basename(spawnOptions.target)+".out")).toBe(true);
+        expect(fs.existsSync(path.basename(spawnOptions.target)+".err")).toBe(true);
         next();
       }, 2000);
     })
   });
-  it("kills the cell deamon", function(next){
+  it("lists the cell", function(next){
+    tissue.list({target: "daemons"}, this, function(c){
+      expect(c.data.length).toBe(1);
+      expect(c.data[0].pid).toBe(daemonCell.pid.toString());
+      next();
+    });
+  });
+  it("restarts the cell", function(next){
+    process.kill(daemonCell.pid, "SIGUSR2");
+    setTimeout(function(){
+      tissue.list({target: "daemons"}, this, function(c){
+        expect(c.data.length).toBe(1);
+        expect(c.data[0].pid).not.toBe(daemonCell.pid);
+        daemonCell.pid = c.data[0].pid;
+        next();
+      })
+    }, 500);
+  });
+  it("kills the cell", function(next){
     tissue.stop({target: daemonCell.pid}, this, function(c){
       setTimeout(function(){
         var pid = mockGetCellMarker("daemons", spawnOptions.target, daemonCell.pid);
@@ -37,4 +57,12 @@ describe("Tissue", function(){
       }, 2000);
     });
   })
+  it("lists no cells", function(next){
+    tissue.list({target: "daemons"}, this, function(c){
+      expect(c.data.length).toBe(0);
+      fs.unlink(path.basename(spawnOptions.target)+".out");
+      fs.unlink(path.basename(spawnOptions.target)+".err");
+      next();
+    });
+  });
 });
