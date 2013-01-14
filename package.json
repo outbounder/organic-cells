@@ -7,7 +7,9 @@
   },
   "dependencies": {
     "organic": "0.0.6",
-    "organic-webcell": "0.1.3"
+    "organic-webcell": "0.1.3",
+    "shelljs": "latest",
+    "glob": "*"
   },
   "license": "MIT"
 }

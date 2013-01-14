@@ -28,11 +28,13 @@ describe("Tissue", function(){
   });
 
   it("prints all the output properly even for the death cells", function(next){
-    plasma.emit({type: "Tissue", action: "output"}, this, function(c){
-      expect(c instanceof Error).toBe(false);
-      expect(c.data).toContain("HttpServer");
-      expect(c.data).toContain("exit");
-      next();
-    })
+    setTimeout(function(){
+      plasma.emit({type: "Tissue", action: "output"}, this, function(c){
+        expect(c instanceof Error).toBe(false);
+        expect(c.data).toContain("HttpServer");
+        expect(c.data).toContain("exit");
+        next();
+      })
+    }, 1000);
   })
 });
