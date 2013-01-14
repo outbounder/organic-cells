@@ -11,7 +11,7 @@ describe("Tissue", function(){
   });
 
   it("spawns new cell from path", function(next){
-    plasma.emit({type: "Tissue", action: "spawn", target: __dirname+"/../data/cell.js"}, this, function(c){
+    plasma.emit({type: "Tissue", action: "start", target: __dirname+"/../data/cell.js"}, this, function(c){
       expect(c instanceof Error).toBe(false);
       childCell = c.data;
       next();
@@ -20,21 +20,10 @@ describe("Tissue", function(){
 
   it("kills the new cell", function(next){
     setTimeout(function(){
-      plasma.emit({type: "Tissue", action: "kill", target: childCell}, this, function(c){
+      plasma.emit({type: "Tissue", action: "stop", target: childCell.pid}, this, function(c){
         expect(c instanceof Error).toBe(false);
         next();
       });  
     }, 2000);
   });
-
-  it("prints all the output properly even for the death cells", function(next){
-    setTimeout(function(){
-      plasma.emit({type: "Tissue", action: "output"}, this, function(c){
-        expect(c instanceof Error).toBe(false);
-        expect(c.data).toContain("HttpServer");
-        expect(c.data).toContain("exit");
-        next();
-      })
-    }, 1000);
-  })
 });

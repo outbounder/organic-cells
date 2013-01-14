@@ -19,7 +19,7 @@ describe("Tissue", function(){
   };
 
   it("creates cell instance as daemon", function(next){
-    tissue.spawn(spawnOptions, this, function(c){
+    tissue.start(spawnOptions, this, function(c){
       daemonCell = c.data;
       setTimeout(function(){
         var pid = mockGetCellMarker("daemons", spawnOptions.target, daemonCell.pid);
@@ -29,7 +29,7 @@ describe("Tissue", function(){
     })
   });
   it("kills the cell deamon", function(next){
-    tissue.kill({target: daemonCell}, this, function(c){
+    tissue.stop({target: daemonCell.pid}, this, function(c){
       setTimeout(function(){
         var pid = mockGetCellMarker("daemons", spawnOptions.target, daemonCell.pid);
         expect(fs.existsSync(pid)).toBe(false);
