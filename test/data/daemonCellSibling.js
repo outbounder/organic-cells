@@ -6,12 +6,18 @@ var cell = new Cell({
     },
     "Tissue": {
       "source": "membrane/Tissue",
-      "bindTo": "daemons"
+      "bindTo": "daemon-siblings"
     }
   },
   plasma: {
     "Self": {
-      "source": "plasma/Self"
+      "source": "plasma/Self",
+      "tissue": "daemon-siblings",
+      "siblings": [
+        {
+          name: "test/data/daemonCellSibling2.js"
+        }
+      ]
     }
   }
 });

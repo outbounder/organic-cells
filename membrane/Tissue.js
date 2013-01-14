@@ -23,9 +23,6 @@ module.exports = Organel.extend(function Tissue(plasma, config){
 
   if(config.bindTo) {
     var self = this;
-    process.on("SIGUSR2", function(){
-      self.restart();
-    });
     process.on("exit", function(){
       if(fs.existsSync(self.getCellMarker()))
         fs.unlinkSync(self.getCellMarker());
@@ -56,8 +53,6 @@ module.exports = Organel.extend(function Tissue(plasma, config){
     return path.join(getUserHome(),".organic", this.config.bindTo, path.basename(process.argv[1]))+"."+process.pid;
   },
   start: function(c, sender, callback){
-    if(!c.target) 
-      c.target = process.argv[1];
     var argv = c.argv || this.config.argv || [];
     var err = out = (c.cwd || this.config.cellCwd || process.cwd())+"/"+path.basename(c.target);
     out = fs.openSync(out+".out", 'a');
@@ -77,12 +72,6 @@ module.exports = Organel.extend(function Tissue(plasma, config){
   stop: function(c, sender, callback){
     process.kill(-c.target); // not sure is it working on win
     if(callback) callback(c);
-  },
-  restart: function(c, sender, callback) {
-    this.start({}, sender, function(start){
-      if(callback) callback(start);
-      process.exit();
-    });
   },
   list: function(c, sender, callback){
     var root = path.join(getUserHome(),"/.organic");
