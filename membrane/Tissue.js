@@ -23,23 +23,20 @@ module.exports = Organel.extend(function Tissue(plasma, config){
 
   if(config.bindTo) {
     var self = this;
+    process.on("SIGUSR2", function(){
+      self.restart();
+    });
     process.on("exit", function(){
       if(fs.existsSync(self.getCellMarker()))
         fs.unlinkSync(self.getCellMarker());
     });
     process.on("SIGTERM", function(){
-      if(fs.existsSync(self.getCellMarker()))
-        fs.unlinkSync(self.getCellMarker());
       process.exit(0);
     });
     process.on("SIGINT", function(){
-      if(fs.existsSync(self.getCellMarker()))
-        fs.unlinkSync(self.getCellMarker());
       process.exit(0);
     })
     process.on("uncaughtException", function(err){
-      if(fs.existsSync(self.getCellMarker()))
-        fs.unlinkSync(self.getCellMarker());
       console.log(err);
       console.log(err.stack);
       process.exit(1);
@@ -60,7 +57,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
   },
   start: function(c, sender, callback){
     if(!c.target) 
-      c.target = path.basename(process.argv[1]);
+      c.target = process.argv[1];
     var argv = c.argv || this.config.argv || [];
     var err = out = (c.cwd || this.config.cellCwd || process.cwd())+"/"+path.basename(c.target);
     out = fs.openSync(out+".out", 'a');
@@ -82,24 +79,9 @@ module.exports = Organel.extend(function Tissue(plasma, config){
     if(callback) callback(c);
   },
   restart: function(c, sender, callback) {
-    // POSSIBLY NOT A GOOD IDEA AT ALL
-    var pid = c.target;
-    var self = this;
-    self.list({}, self, function(list){
-      var allCells = list.data;
-      for(var i = 0; i<allCells.length; i++)
-        if(allCells[i].pid == pid) {
-          var cell = allCells[i];
-          var runtime = JSON.parse(fs.readFileSync(self.getCellMarker(cell.tissue, cell.name, cell.pid)));
-          self.stop(c, self, function(){
-            self.start({target: path.join(runtime.source,cell.name), cwd: runtime.cwd}, self, function(start){
-              start.cell = cell;
-              start.runtime = runtime;
-              if(callback) callback(start);
-            });
-          });
-          return;
-        }
+    this.start({}, sender, function(start){
+      if(callback) callback(start);
+      process.exit();
     });
   },
   list: function(c, sender, callback){
