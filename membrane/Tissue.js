@@ -30,7 +30,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
     process.on("SIGTERM", function(){
       process.exit(0);
     });
-    process.on("SIGINT", function(){
+    process.on("SIGINT", function(){ // ctrl+c, only for linux/windows :?
       process.exit(0);
     })
     process.on("uncaughtException", function(err){

@@ -15,7 +15,7 @@ var cell = new Cell({
       "tissue": "daemon-siblings",
       "siblings": [
         {
-          name: "test/data/daemonCellSibling2.js"
+          name: "daemonCellSibling2.js"
         }
       ]
     }

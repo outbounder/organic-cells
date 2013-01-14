@@ -8,7 +8,6 @@ module.exports = Organel.extend(function Self(plasma, config){
     for(var key in config.cwd)
       config[key] = process.cwd()+config.cwd[key];
   this.config = config;
-
   var self = this;
 
   process.on("SIGUSR2", function(){
@@ -25,9 +24,11 @@ module.exports = Organel.extend(function Self(plasma, config){
       action: "list",
       target: config.tissue
     }, function(list){
-      var notStartedSiblings = _.difference(_.pluck(config.siblings,"name"), _.pluck(list.data, "name"));
+      var siblingsNames = _.pluck(config.siblings,"name");
+      var startedNames = _.pluck(list.data, "name");
+      var notStartedSiblings = _.difference(siblingsNames, startedNames);
       notStartedSiblings.forEach(function(siblingName){
-        var target = path.join(config.base || process.cwd(), siblingName);
+        var target = path.join(path.dirname(process.argv[1]), siblingName);
         self.emit({
           type: "Tissue",
           action: "start",
