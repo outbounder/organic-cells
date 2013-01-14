@@ -10,7 +10,8 @@
     "organic-webcell": "0.1.3",
     "shelljs": "latest",
     "glob": "*",
-    "underscore": "*"
+    "underscore": "*",
+    "async": "*"
   },
   "license": "MIT"
 }
