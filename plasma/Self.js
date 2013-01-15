@@ -45,11 +45,16 @@ module.exports = Organel.extend(function Self(plasma, config){
       var notStartedSiblings = _.difference(siblingsNames, startedNames);
       var startedSiblings = [];
       async.forEach(notStartedSiblings, function(siblingName, next){
-        var target = path.join(path.dirname(process.argv[1]), siblingName);
+        var sibling = _.find(c.siblings, function(s){ return s.name == siblingName });
+        var target = siblingName;
+        if(!sibling.cwd)
+          target = path.join(path.dirname(process.argv[1]), siblingName);
         self.emit({
           type: "Tissue",
           action: "start",
-          target: target
+          target: target,
+          cwd: sibling.cwd?path.join(path.dirname(process.argv[1]), sibling.cwd):false,
+          output: sibling.output
         }, function(started){
           if(started instanceof Error) return next(started);
           startedSiblings.push(started.data);

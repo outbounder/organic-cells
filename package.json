@@ -6,14 +6,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "organic": "0.0.x",
+    "organic": "0.0.7",
     "shelljs": "latest",
     "glob": "*",
     "underscore": "*",
     "async": "*"
   },
   "devDependencies": {
-    "organic-webcell": "0.1.x"
+    "organic-webcell": "0.1.4"
   },
   "license": "MIT"
 }

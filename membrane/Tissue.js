@@ -56,7 +56,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
   },
   start: function(c, sender, callback){
     var argv = c.argv || this.config.argv || [];
-    var err = out = (c.cwd || this.config.cellCwd || process.cwd())+"/"+path.basename(c.target);
+    var err = out = (c.output || c.cwd || this.config.cellCwd || process.cwd())+"/"+path.basename(c.target);
     out = fs.openSync(out+".out", 'a');
     err = fs.openSync(err+".err", 'a');
     var options = {
@@ -79,7 +79,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
     this.list({}, this, function(r){
       var stopped = [];
       r.data.forEach(function(entry){
-        if(entry.name == c.target) {
+        if(entry.name == c.target || entry.tissue == c.target) {
           process.kill(-entry.pid);
           stopped.push(entry);
         }
@@ -91,7 +91,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
     this.list({}, this, function(r){
       var restarted = [];
       r.data.forEach(function(entry){
-        if(entry.name == c.target) {
+        if(entry.name == c.target || entry.tissue == c.target) {
           process.kill(-entry.pid, "SIGUSR2");
           restarted.push(entry);
         }
@@ -103,7 +103,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
     this.list({}, this, function(r){
       var upgraded = [];
       r.data.forEach(function(entry){
-        if(entry.name == c.target) {
+        if(entry.name == c.target || entry.tissue == c.target) {
           process.kill(-entry.pid, "SIGUSR1");
           upgraded.push(entry);
         }
