@@ -75,10 +75,8 @@ module.exports = Organel.extend(function Self(plasma, config){
     fs.exists(".git", function(exists){
       if(exists) {
         shelljs.exec("git pull",function(code, output){
-          console.log(output);
           if(code == 0)
             shelljs.exec("npm install", function(code, output){
-              console.log(output);
               self.restart(c, sender, callback);
             });
         });

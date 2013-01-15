@@ -38,8 +38,10 @@ module.exports = Organel.extend(function Tissue(plasma, config){
       console.log(err.stack);
       process.exit(1);
     });
+
     if(!fs.existsSync(path.join(getUserHome(),".organic",config.bindTo)))
       shelljs.mkdir('-p', path.join(getUserHome(),".organic",config.bindTo));
+    
     fs.writeFileSync(this.getCellMarker(), 
       JSON.stringify({
         source: path.dirname(process.argv[1]),
@@ -72,6 +74,42 @@ module.exports = Organel.extend(function Tissue(plasma, config){
   stop: function(c, sender, callback){
     process.kill(-c.target); // not sure is it working on win
     if(callback) callback(c);
+  },
+  stopall: function(c, sender, callback){
+    this.list({}, this, function(r){
+      var stopped = [];
+      r.data.forEach(function(entry){
+        if(entry.name == c.target) {
+          process.kill(-entry.pid);
+          stopped.push(entry);
+        }
+      });
+      if(callback) callback({data: stopped});
+    })
+  },
+  restartall: function(c, sender, callback){
+    this.list({}, this, function(r){
+      var restarted = [];
+      r.data.forEach(function(entry){
+        if(entry.name == c.target) {
+          process.kill(-entry.pid, "SIGUSR2");
+          restarted.puhs(entry);
+        }
+      });
+      if(callback) callback({data: restarted});
+    })
+  },
+  upgradeall: function(c, sender, callback){
+    this.list({}, this, function(r){
+      var upgraded = [];
+      r.data.forEach(function(entry){
+        if(entry.name == c.target) {
+          process.kill(-entry.pid, "SIGUSR1");
+          upgraded.puhs(entry);
+        }
+      });
+      if(callback) callback({data: upgraded});
+    });
   },
   list: function(c, sender, callback){
     var root = path.join(getUserHome(),"/.organic");

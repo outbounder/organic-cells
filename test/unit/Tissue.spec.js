@@ -31,4 +31,25 @@ describe("Tissue", function(){
       });  
     }, 2000);
   });
+
+  it("stops all cells", function(next){
+    plasma.emit({type: "Tissue", action: "stopall", target: "cell.js"}, this, function(c){
+      expect(c instanceof Error).toBe(false);
+      next();
+    });
+  })
+
+  it("restarts all cells", function(next){
+    plasma.emit({type: "Tissue", action: "restartall", target: "cell.js"}, this, function(c){
+      expect(c instanceof Error).toBe(false);
+      next();
+    });
+  })
+
+  it("upgrades all cells", function(next){
+    plasma.emit({type: "Tissue", action: "upgradeall", target: "cell.js"}, this, function(c){
+      expect(c instanceof Error).toBe(false);
+      next();
+    });
+  })
 });
