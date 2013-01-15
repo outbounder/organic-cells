@@ -93,7 +93,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
       r.data.forEach(function(entry){
         if(entry.name == c.target) {
           process.kill(-entry.pid, "SIGUSR2");
-          restarted.puhs(entry);
+          restarted.push(entry);
         }
       });
       if(callback) callback({data: restarted});
@@ -105,7 +105,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
       r.data.forEach(function(entry){
         if(entry.name == c.target) {
           process.kill(-entry.pid, "SIGUSR1");
-          upgraded.puhs(entry);
+          upgraded.push(entry);
         }
       });
       if(callback) callback({data: upgraded});
