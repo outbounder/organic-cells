@@ -28,12 +28,13 @@ describe("Tissue", function(){
   it("kills all daemon-siblings", function(next){
     siblings.forEach(function(s){
       tissue.stop({target: s.pid});
-      next();
     })
 
     fs.unlink("daemonCellSibling.js.out");
     fs.unlink("daemonCellSibling.js.err");
     fs.unlink("daemonCellSibling2.js.out");
     fs.unlink("daemonCellSibling2.js.err");
+      
+    next();
   })
 });
