@@ -56,18 +56,36 @@ module.exports = Organel.extend(function Tissue(plasma, config){
   },
   start: function(c, sender, callback){
     var argv = c.argv || this.config.argv || [];
-    var err = out = (c.output || c.cwd || this.config.cellCwd || process.cwd())+"/"+path.basename(c.target);
-    out = fs.openSync(out+".out", 'a');
-    err = fs.openSync(err+".err", 'a');
+    
+    var stdio = [];
+    if(c.target && c.output !== false)  {
+      var err = out = (c.output || c.cwd || this.config.cellCwd || process.cwd())+"/"+path.basename(c.target);
+      out = fs.openSync(out+".out", 'a');
+      err = fs.openSync(err+".err", 'a');
+      stdio = ['ignore', out, err];
+    }
+
     var options = {
       detached: true,
       cwd: c.cwd || this.config.cellCwd|| process.cwd(),
       env: c.env || this.config.cellEnv || process.env,
       silent: true,
-      stdio: [ 'ignore', out, err ]
+      stdio: stdio
     }
-    var childCell = child_process.spawn(process.argv[0], [c.target].concat(argv), options);
+
+    var childCell;
+    if(c.target)
+      childCell = child_process.spawn(process.argv[0], [c.target].concat(argv), options);
+    else
+    if(c.exec)
+      childCell = child_process.exec(c.exec, options);
+    else {
+      if(callback) callback(new Error("target or exec missing"));
+      return;
+    }
+
     childCell.unref();
+
     c.data = childCell;
     if(callback) callback(c);
   },

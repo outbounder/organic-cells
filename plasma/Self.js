@@ -38,7 +38,7 @@ module.exports = Organel.extend(function Self(plasma, config){
     this.emit({
       type: "Tissue",
       action: "list",
-      target: c.tissue
+      target: c.tissue || this.config.tissue
     }, function(list){
       var siblingsNames = _.pluck(c.siblings,"name");
       var startedNames = _.pluck(list.data, "name");
@@ -71,19 +71,26 @@ module.exports = Organel.extend(function Self(plasma, config){
       action: "start",
       target: process.argv[1]
     }, function(start){
-      if(callback) callback(start);
-      process.exit();
+      var exit = true;
+      if(callback) exit = callback(start);
+      if(exit)
+        process.exit();
     });
   },
   upgrade: function(c, sender, callback){
     var self = this;
     fs.exists(".git", function(exists){
       if(exists) {
-        shelljs.exec("git pull",function(code, output){
-          if(code == 0)
-            shelljs.exec("npm install", function(code, output){
-              self.restart(c, sender, callback);
-            });
+        self.emit({
+          type: "Tissue",
+          action: "start",
+          exec: "git pull; npm install",
+        }, function(r){
+          if(r instanceof Error) {
+            if(callback) callback(r);
+            return;
+          }
+          self.restart(c, sender, callback);
         });
       }
     });
