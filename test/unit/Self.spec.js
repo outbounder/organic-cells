@@ -6,7 +6,9 @@ describe("Self", function(){
   var plasma = new organic.Plasma();
 
   it("creates instance", function(next) {
-    instance = new Self(plasma, {});
+    instance = new Self(plasma, {
+      name: "testSelf"
+    });
     expect(instance instanceof Self).toBe(true);
     next();
   });
@@ -79,5 +81,26 @@ describe("Self", function(){
     })
   })
 
+  if(process.platform == "linux") {
+    it("registersAsService", function(next){
+      plasma.emit({
+        type: "Self",
+        action: "registerAsService"
+      }, function(c){
+        expect(c instanceof Error).toBe(false);
+        next();
+      })
+    })
+
+    it("unregistersAsService", function(next){
+      plasma.emit({
+        type: "Self",
+        action: "unregisterAsService"
+      }, function(c){
+        expect(c instanceof Error).toBe(false);
+        next();
+      })
+    })
+  }
 
 });

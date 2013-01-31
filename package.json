@@ -10,10 +10,11 @@
     "shelljs": "latest",
     "glob": "*",
     "underscore": "*",
-    "async": "*"
+    "async": "*",
+    "servicer": "0.0.1"
   },
   "devDependencies": {
-    "organic-webcell": "0.1.4"
+    "organic-webcell": "0.1.6"
   },
   "license": "MIT"
 }

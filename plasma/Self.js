@@ -94,5 +94,21 @@ module.exports = Organel.extend(function Self(plasma, config){
         });
       }
     });
+  },
+  registerAsService: function(c, sender, callback){
+    var self = this;
+    require("servicer").init(function(services){
+      services.install(self.config.name, process.cwd, process.argv[1], function(err){
+        callback(err);
+      });
+    })
+  },
+  unregisterAsService: function(c, sender, callback) {
+    var self = this;
+    require("servicer").init(function(services){
+      services.uninstall(self.config.name, function(err){
+        callback(err);
+      });
+    })
   }
 })
