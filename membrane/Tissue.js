@@ -98,7 +98,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
       var stopped = [];
       r.data.forEach(function(entry){
         if(entry.name == c.target || entry.tissue == c.target) {
-          process.kill(-entry.pid);
+          process.kill(entry.pid);
           stopped.push(entry);
         }
       });
@@ -110,7 +110,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
       var restarted = [];
       r.data.forEach(function(entry){
         if(entry.name == c.target || entry.tissue == c.target) {
-          process.kill(-entry.pid, "SIGUSR2");
+          process.kill(entry.pid, "SIGUSR2");
           restarted.push(entry);
         }
       });
@@ -122,7 +122,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
       var upgraded = [];
       r.data.forEach(function(entry){
         if(entry.name == c.target || entry.tissue == c.target) {
-          process.kill(-entry.pid, "SIGUSR1");
+          process.kill(entry.pid, "SIGUSR1");
           upgraded.push(entry);
         }
       });
