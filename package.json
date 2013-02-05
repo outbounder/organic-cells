@@ -6,11 +6,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "organic": "0.0.7",
-    "shelljs": "latest",
-    "glob": "*",
-    "underscore": "*",
-    "async": "*",
+    "organic": "0.0.9",
+    "shelljs": "0.1.2",
+    "glob": "3.1.14",
+    "underscore": "1.4.4",
+    "async": "0.1.22",
     "servicer": "0.0.1"
   },
   "devDependencies": {
