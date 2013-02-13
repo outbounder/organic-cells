@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "organic": "0.0.9",
+    "organic": "0.0.10",
     "shelljs": "0.1.2",
     "glob": "3.1.14",
     "underscore": "1.4.4",
@@ -14,7 +14,8 @@
     "servicer": "0.0.1"
   },
   "devDependencies": {
-    "organic-webcell": "0.1.6"
+    "organic-webcell": "0.1.7",
+    "request": "latest"
   },
   "license": "MIT"
 }

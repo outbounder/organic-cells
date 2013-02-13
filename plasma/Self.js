@@ -22,7 +22,7 @@ module.exports = Organel.extend(function Self(plasma, config){
     console.log("recieved restart signal");
     self.restart({});
   });
-
+  
   this.on("Self", function(c, sender, callback){
     this[c.action](c, sender, callback);
   });

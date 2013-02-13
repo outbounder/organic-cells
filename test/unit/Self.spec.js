@@ -81,26 +81,4 @@ describe("Self", function(){
     })
   })
 
-  if(process.platform == "linux") {
-    it("registersAsService", function(next){
-      plasma.emit({
-        type: "Self",
-        action: "registerAsService"
-      }, function(c){
-        expect(c instanceof Error).toBe(false);
-        next();
-      })
-    })
-
-    it("unregistersAsService", function(next){
-      plasma.emit({
-        type: "Self",
-        action: "unregisterAsService"
-      }, function(c){
-        expect(c instanceof Error).toBe(false);
-        next();
-      })
-    })
-  }
-
 });

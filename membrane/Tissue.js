@@ -26,18 +26,22 @@ module.exports = Organel.extend(function Tissue(plasma, config){
     process.on("exit", function(){
       if(fs.existsSync(self.getCellMarker()))
         fs.unlinkSync(self.getCellMarker());
-    });
+    })
     process.on("SIGTERM", function(){
-      process.exit(0);
-    });
-    process.on("SIGINT", function(){ // ctrl+c, only for linux/windows :?
+      if(fs.existsSync(self.getCellMarker()))
+        fs.unlinkSync(self.getCellMarker());
       process.exit(0);
     })
-    process.on("uncaughtException", function(err){
-      console.log(err);
-      console.log(err.stack);
-      process.exit(1);
-    });
+    process.on("SIGINT", function(){
+      if(fs.existsSync(self.getCellMarker()))
+        fs.unlinkSync(self.getCellMarker());
+      process.exit(0);
+    })
+    this.on("kill", function(){
+      if(fs.existsSync(self.getCellMarker()))
+        fs.unlinkSync(self.getCellMarker());
+      return false;
+    })
 
     if(!fs.existsSync(path.join(getUserHome(),".organic",config.bindTo)))
       shelljs.mkdir('-p', path.join(getUserHome(),".organic",config.bindTo));
@@ -90,7 +94,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
     if(callback) callback(c);
   },
   stop: function(c, sender, callback){
-    process.kill(-c.target); // not sure is it working on win
+    process.kill(c.target);
     if(callback) callback(c);
   },
   stopall: function(c, sender, callback){
