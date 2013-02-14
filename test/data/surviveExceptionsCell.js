@@ -18,10 +18,13 @@ var cell = new Cell({
   plasma: {
     "Self": {
       "source": "plasma/Self",
-      "tissue": "daemons"
+      "tissue": "daemons",
+      "surviveExceptions": true
     }
   }
 });
 cell.plasma.on("throwException", function(c){
-  nonexistentFunc();
+  process.nextTick(function(){
+    nonexistentFunc();  
+  })
 })

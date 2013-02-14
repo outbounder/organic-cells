@@ -33,8 +33,9 @@ describe("SuvriveExceptions", function(){
   
   it("triggers error", function(next){
     request.get("http://localhost:1234", function(err, res, body){
-      setTimeout(next, 2000);
+      
     })
+    setTimeout(next, 2000);
   });
   it("lists the cell", function(next){
     tissue.list({target: "daemons"}, this, function(c){

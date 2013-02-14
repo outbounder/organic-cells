@@ -22,6 +22,11 @@ module.exports = Organel.extend(function Self(plasma, config){
     console.log("recieved restart signal");
     self.restart({});
   });
+
+  if(config.surviveExceptions)
+    process.on("uncaughtException", function(err){
+      // do nothing here
+    });
   
   this.on("Self", function(c, sender, callback){
     this[c.action](c, sender, callback);

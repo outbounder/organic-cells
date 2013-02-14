@@ -4,9 +4,20 @@ var fs = require("fs");
 var path = require("path");
 var shelljs = require("shelljs");
 var glob = require("glob");
+var async = require('async');
 
-function getUserHome() {
+var getUserHome = function () {
   return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+}
+
+var checkPid = function(pid, callback) {
+  if(process.platform.indexOf("win") === 0) {
+    throw new Error("Windows not supported yet");
+  } else {
+    child_process.exec("ps -p "+pid, function(err, stdout, stderr){
+      callback(null, stdout.toString().indexOf(pid) !== -1);
+    });
+  }
 }
 
 module.exports = Organel.extend(function Tissue(plasma, config){
@@ -151,5 +162,27 @@ module.exports = Organel.extend(function Tissue(plasma, config){
       c.data = entries;
       if(callback) callback(c);
     });
+  },
+  cleanup: function(c, sender, callback) {
+    var self = this;
+    this.list(c, sender, function(r){
+      var stopped = [];
+      async.forEach(r.data, function(entry, next){
+        checkPid(entry.pid, function(err, running){
+          if(err) return next(err);
+          if(!running) {
+            fs.unlink(self.getCellMarker(entry.tissue,entry.name, entry.pid), function(err){
+              next(err);
+            })
+            stopped.push(entry);
+          } else
+            next();
+        })
+      }, function(err){
+        if(err) return callback(err);
+        c.data = stopped;
+        callback(c);
+      })
+    })
   }
 })
