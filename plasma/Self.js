@@ -12,6 +12,7 @@ module.exports = Organel.extend(function Self(plasma, config){
       config[key] = process.cwd()+config.cwd[key];
   this.config = config;
   var self = this;
+  self.config.upgradeCommand = self.config.upgradeCommand || "git pull; npm install";
 
   process.on("SIGUSR1", function(){
     console.log("recieved upgrade signal");
@@ -91,7 +92,7 @@ module.exports = Organel.extend(function Self(plasma, config){
         self.emit({
           type: "Tissue",
           action: "start",
-          exec: "git pull; npm install",
+          exec: self.config.upgradeCommand,
         }, function(r){
           if(r instanceof Error) {
             if(callback) callback(r);
