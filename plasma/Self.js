@@ -23,10 +23,12 @@ module.exports = Organel.extend(function Self(plasma, config){
     self.restart({});
   });
 
-  if(config.surviveExceptions)
+  if(config.surviveExceptions) {
+    this.emit("surviveExceptions");
     process.on("uncaughtException", function(err){
       // do nothing here
     });
+  }
   
   this.on("Self", function(c, sender, callback){
     this[c.action](c, sender, callback);

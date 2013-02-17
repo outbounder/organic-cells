@@ -47,7 +47,17 @@ module.exports = Organel.extend(function Tissue(plasma, config){
       if(fs.existsSync(self.getCellMarker()))
         fs.unlinkSync(self.getCellMarker());
       process.exit(0);
-    })
+    });
+    var exceptionWrapper = function(err){
+      if(fs.existsSync(self.getCellMarker()))
+        fs.unlinkSync(self.getCellMarker());
+      process.exit(1);
+    }
+    process.on("uncaughtException", exceptionWrapper);
+    this.on("surviveExceptions", function(){
+      process.removeListener("uncaughtException", exceptionWrapper)
+      return false;
+    });
     this.on("kill", function(){
       if(fs.existsSync(self.getCellMarker()))
         fs.unlinkSync(self.getCellMarker());
