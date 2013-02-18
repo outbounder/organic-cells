@@ -38,6 +38,11 @@ module.exports = Organel.extend(function HttpPostCommitHook(plasma, config){
 }, {
   "processPostCommit": function(c, sender, callback) {
     if(this.config.triggerOn) {
+      if(c.req.payload) {
+        try {
+          c.req = JSON.parse(c.req.payload)
+        } catch(e){ }
+      }
       if(c.req.ref && c.req.ref.indexOf(this.config.triggerOn) !== -1)
         this.emit(this.config.traggerChemical, callback);
     } else
