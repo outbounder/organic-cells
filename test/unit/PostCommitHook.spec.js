@@ -4,6 +4,7 @@ var path = require('path');
 describe("Self", function(){
   var PostCommitHook = require("../../plasma/HttpPostCommitHook");
   var plasma = new organic.Plasma();
+  var handler;
 
   it("creates instance", function(next) {
     instance = new PostCommitHook(plasma);
@@ -28,8 +29,6 @@ describe("Self", function(){
 
   it("registers to HttpServer", function(next){
     var url;
-    var handler;
-
     plasma.emit({
       type: "HttpServer",
       data: {
@@ -44,6 +43,36 @@ describe("Self", function(){
 
     expect(url).toBe("/post-commit");
     next();
+  })
+
+  it("handles github payload", function(next){
+    instance.config.triggerOn = "master";
+    plasma.once("Self", function(c, sender, callback){
+      expect(sender instanceof PostCommitHook).toBe(true);
+      expect(c.action).toBe("upgrade");
+      next();
+    });
+    handler({
+      body: require("../data/github-payload.json")
+    }, {
+      send: function(){
+        
+      }
+    })
+  })
+
+  it("dont handles github payload", function(next){
+    instance.config.triggerOn = "develop";
+    plasma.once("Self", function(c, sender, callback){
+      throw new Error("shouldnt happen");
+    });
+    handler({
+      body: require("../data/github-payload.json")
+    }, {
+      send: function(){
+        next();
+      }
+    })
   })
 
 });
