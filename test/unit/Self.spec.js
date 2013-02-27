@@ -37,7 +37,9 @@ describe("Self", function(){
         expect(c.exec).toBe("git pull; npm install");
       if(c.target)
         expect(c.target).toBe(process.argv[1]); // self
-      callback({data: {pid: "fake"}});
+      callback({data: {pid: "fake", on: function(event, callback){
+        callback(0);
+      }}});
     };
     plasma.on("Tissue", tissueMockUp);
     plasma.emit({

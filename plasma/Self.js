@@ -98,7 +98,15 @@ module.exports = Organel.extend(function Self(plasma, config){
             if(callback) callback(r);
             return;
           }
-          self.restart(c, sender, callback);
+          r.data.on("exit", function(code){
+            if(code == 0)
+              self.restart(c, sender, callback);
+            else
+              if(callback)
+                callback(new Error(self.config.upgradeCommand+" failed with code "+code));
+              else
+                console.log(self.config.upgradeCommand+" failed with code "+code);
+          });
         });
       }
     });
