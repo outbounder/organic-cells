@@ -6,6 +6,125 @@ var shelljs = require("shelljs");
 var glob = require("glob");
 var async = require('async');
 
+/* organel | 
+
+* `cwd`: Object
+
+  * optional * , Object containing key:value pairs, where all values will be prefixed with `process.cwd()` and set with their coressponding keys directly to the DNA of the organelle.
+
+
+* `captureType` : "Tissue"
+
+  the type of the chemical which the organelle will listen to. Defaults to `"Tissue"`
+
+* `bindTo` : String
+
+  when value is provided, the Tissue organelle will write a `cell marker` file at `%USER_HOME%/.organic/bindToValue/entrypoint.pid` which is used to identify running or improperly stopped cells.
+
+  this represent the name of the tissue to which the cell should be grouped.
+
+* `argv` : [ String ]
+
+  *optional*, represents the default arguments to be used when starting something via the Tissue
+
+* `cellCwd` : String
+
+  *optional*, represents the default current working directory for the process started via the Tissue
+
+* `cellEnv` : Object
+
+  *optional*, represents the default process environment once started via the Tissue*/
+
+/* incoming | Tissue 
+
+* `action` : String
+
+  **required**, can have one of the following values and their corresponding options:
+
+    * **start**
+
+      Starts a Cell as daemon background process. It depends to the Cell for self registration using Tissue markers.
+
+      * `target` : String
+
+        path to nodejs app entry point
+
+      * `exec` : String
+
+        if `target` is not provided, giving value to `exec` will start a shell process parsing any commandline operations provided in its value.
+      
+      * `output` : true
+
+        instructs piping all stdout & stderr outputs of the process to file next to the app entry point.
+
+      * `argv` : [ String ]
+
+        *optional*, represents the default arguments to be used when starting something via the Tissue
+
+      * `cwd` : String
+
+        *optional*, represents the default current working directory for the process started via the Tissue
+
+      * `cellEnv` : Object
+
+        *optional*, represents the default process environment once started via the Tissue
+    
+    * **stop**
+
+      Stops single process running.
+
+      * `target` : String
+
+        pid of process
+
+    * **stopall**
+
+      Stops all cells by given target
+
+      * `target` : String
+        
+        nodejs entry name or tissue name
+
+    * **restartall**
+   
+      Sends `SIGUSR2` process signal to all Cells by given target who registered themselfs via Tissue markers 
+ 
+      * `target` : String
+
+        nodejs entry name or tissue name
+
+    * **upgradeall**
+
+      Sends `SIGUSR1` process signal to all Cells by given target who registered themselfs via Tissue markers
+
+      * `target` : String
+      
+        nodejs entry name or tissue name
+
+    * **list**
+
+      Searches in organic directory appending optionally given target as tissue name, for containing files and returns them as json array with structure
+
+          {
+            name: String, basename of Cell's entry point
+            tissue: String, dirname of Cell's marker
+            pid: String, process id of Cell's instance
+          }
+
+      * `target` : String
+        
+        *optional* tissue name
+
+    * **cleanup**
+
+      Lists all found markers and checks for existence of process with the recorded pid. In case it is not found - the marker file is deleted. Returns json list with deleted markers.
+
+* `target` : String
+
+   Depends on `action` value.
+
+*/
+
 var getUserHome = function () {
   return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }
