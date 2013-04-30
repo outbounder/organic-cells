@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Docker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./js/jade.js"></script><!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="pull-right"><a href="javascript: void(0)" class="introMeBtn alert">Please let me know what is this?</a></div>
+    </div>
+    <div class="container">
+      <div class="head">
+        <h1>organic-cells</h1>
+      </div>
+      <div data-file="membrane/Tissue.js" class="row-fluid organelContainer">
+        <div class="span4 incomingList">
+          <div class="chemicalContainer">
+            <div class="chemical">
+              <div class="magnifier"></div><a href="javascript: void(0);" data-details="&lt;p&gt;incoming | Tissue &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;action&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;required&lt;/strong&gt;, can have one of the following values and their corresponding options:&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;strong&gt;start&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Starts a Cell as daemon background process. It depends to the Cell for self registration using Tissue markers.&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;path to nodejs app entry point&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;exec&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;if &lt;code&gt;target&lt;/code&gt; is not provided, giving value to &lt;code&gt;exec&lt;/code&gt; will start a shell process parsing any commandline operations provided in its value.&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;output&lt;/code&gt; : true&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;instructs piping all stdout &amp; stderr outputs of the process to file next to the app entry point.&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;argv&lt;/code&gt; : [ String ]&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default arguments to be used when starting something via the Tissue&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;cwd&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default current working directory for the process started via the Tissue&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;cellEnv&lt;/code&gt; : Object&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default process environment once started via the Tissue&lt;/p&gt;
+
+&lt;p&gt;This action returns emitted Chemical callback with data value equal to the spawned child process in detached state.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;stop&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Stops single process running.&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;pid of process&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;stopall&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Stops all cells by given target&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;nodejs entry name or tissue name&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;restartall&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Sends &lt;code&gt;SIGUSR2&lt;/code&gt; process signal to all Cells by given target who registered themselfs via Tissue markers &lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;nodejs entry name or tissue name&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;upgradeall&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Sends &lt;code&gt;SIGUSR1&lt;/code&gt; process signal to all Cells by given target who registered themselfs via Tissue markers&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;nodejs entry name or tissue name&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;list&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Searches in organic directory appending optionally given target as tissue name, for containing files and returns them as json array with structure&lt;/p&gt;
+
+&lt;p&gt;{
+    name: String, basename of Cell's entry point
+    tissue: String, dirname of Cell's marker
+    pid: String, process id of Cell's instance
+  }&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt; tissue name&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;cleanup&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;Lists all found markers and checks for existence of process with the recorded pid. In case it is not found - the marker file is deleted. Returns json list with deleted markers.&lt;/p&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;Depends on &lt;code&gt;action&lt;/code&gt; value.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;" data-name=" Tissue " data-file="membrane/Tissue.js" data-commentBlock=" incoming | Tissue 
+
+* `action` : String
+
+  **required**, can have one of the following values and their corresponding options:
+
+    * **start**
+
+      Starts a Cell as daemon background process. It depends to the Cell for self registration using Tissue markers.
+
+      * `target` : String
+
+        path to nodejs app entry point
+
+      * `exec` : String
+
+        if `target` is not provided, giving value to `exec` will start a shell process parsing any commandline operations provided in its value.
+      
+      * `output` : true
+
+        instructs piping all stdout &amp; stderr outputs of the process to file next to the app entry point.
+
+      * `argv` : [ String ]
+
+        *optional*, represents the default arguments to be used when starting something via the Tissue
+
+      * `cwd` : String
+
+        *optional*, represents the default current working directory for the process started via the Tissue
+
+      * `cellEnv` : Object
+
+        *optional*, represents the default process environment once started via the Tissue
+
+      This action returns emitted Chemical callback with data value equal to the spawned child process in detached state.
+    
+    * **stop**
+
+      Stops single process running.
+
+      * `target` : String
+
+        pid of process
+
+    * **stopall**
+
+      Stops all cells by given target
+
+      * `target` : String
+        
+        nodejs entry name or tissue name
+
+    * **restartall**
+   
+      Sends `SIGUSR2` process signal to all Cells by given target who registered themselfs via Tissue markers 
+ 
+      * `target` : String
+
+        nodejs entry name or tissue name
+
+    * **upgradeall**
+
+      Sends `SIGUSR1` process signal to all Cells by given target who registered themselfs via Tissue markers
+
+      * `target` : String
+      
+        nodejs entry name or tissue name
+
+    * **list**
+
+      Searches in organic directory appending optionally given target as tissue name, for containing files and returns them as json array with structure
+
+          {
+            name: String, basename of Cell's entry point
+            tissue: String, dirname of Cell's marker
+            pid: String, process id of Cell's instance
+          }
+
+      * `target` : String
+        
+        *optional* tissue name
+
+    * **cleanup**
+
+      Lists all found markers and checks for existence of process with the recorded pid. In case it is not found - the marker file is deleted. Returns json list with deleted markers.
+
+* `target` : String
+
+   Depends on `action` value.
+
+" class="name"> Tissue </a>
+              <div class="clear"></div>
+              <div class="structure">{<br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;action&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;required&lt;/strong&gt;, can have one of the following values and their corresponding options:&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;strong&gt;start&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Starts a Cell as daemon background process. It depends to the Cell for self registration using Tissue markers.&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;path to nodejs app entry point&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;exec&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;if &lt;code&gt;target&lt;/code&gt; is not provided, giving value to &lt;code&gt;exec&lt;/code&gt; will start a shell process parsing any commandline operations provided in its value.&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;output&lt;/code&gt; : true&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;instructs piping all stdout &amp; stderr outputs of the process to file next to the app entry point.&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;argv&lt;/code&gt; : [ String ]&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default arguments to be used when starting something via the Tissue&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;cwd&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default current working directory for the process started via the Tissue&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;cellEnv&lt;/code&gt; : Object&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default process environment once started via the Tissue&lt;/p&gt;
+
+&lt;p&gt;This action returns emitted Chemical callback with data value equal to the spawned child process in detached state.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;stop&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Stops single process running.&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;pid of process&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;stopall&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Stops all cells by given target&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;nodejs entry name or tissue name&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;restartall&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Sends &lt;code&gt;SIGUSR2&lt;/code&gt; process signal to all Cells by given target who registered themselfs via Tissue markers &lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;nodejs entry name or tissue name&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;upgradeall&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Sends &lt;code&gt;SIGUSR1&lt;/code&gt; process signal to all Cells by given target who registered themselfs via Tissue markers&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;nodejs entry name or tissue name&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;list&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Searches in organic directory appending optionally given target as tissue name, for containing files and returns them as json array with structure&lt;/p&gt;
+
+&lt;p&gt;{
+    name: String, basename of Cell's entry point
+    tissue: String, dirname of Cell's marker
+    pid: String, process id of Cell's instance
+  }&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt; tissue name&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;cleanup&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;Lists all found markers and checks for existence of process with the recorded pid. In case it is not found - the marker file is deleted. Returns json list with deleted markers.&lt;/p&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;" data-name="action "><span>action  : </span></a><span class="label"> String</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;target&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;Depends on &lt;code&gt;action&lt;/code&gt; value.&lt;/p&gt;" data-name="target "><span>target  : </span></a><span class="label"> String</span><br>}
+              </div>
+              <div class="placeholder"></div>
+            </div>
+            <div class="rightarrow"></div>
+          </div>
+          <div class="chemicalContainer">
+            <div class="chemical">
+              <div class="magnifier"></div><a href="javascript: void(0);" data-details="&lt;p&gt;incoming | surviveExceptions &lt;/p&gt;
+
+&lt;p&gt;Tissue organelle listens for such chemical in order to unbind global exceptions trapping. This prevents the organelle from removing the tissue marker upon destroying the cell itself. Thereafter the organelle removes the marker only once &lt;code&gt;kill&lt;/code&gt; chemical is received.&lt;/p&gt;
+
+&lt;p&gt;such chemicals are accepted only when &lt;code&gt;bindTo&lt;/code&gt; value is provided&lt;/p&gt;" data-name=" surviveExceptions " data-file="membrane/Tissue.js" data-commentBlock=" incoming | surviveExceptions 
+
+Tissue organelle listens for such chemical in order to unbind global exceptions trapping. This prevents the organelle from removing the tissue marker upon destroying the cell itself. Thereafter the organelle removes the marker only once `kill` chemical is received.
+
+such chemicals are accepted only when `bindTo` value is provided" class="name"> surviveExceptions </a>
+              <div class="clear"></div>
+              <div class="structure">{<br>}
+              </div>
+              <div class="placeholder"></div>
+            </div>
+            <div class="rightarrow"></div>
+          </div>
+          <div class="chemicalContainer">
+            <div class="chemical">
+              <div class="magnifier"></div><a href="javascript: void(0);" data-details="&lt;p&gt;incoming | kill &lt;/p&gt;
+
+&lt;p&gt;Upon receiving such chemical the organelle removes the tissue marker&lt;/p&gt;" data-name=" kill " data-file="membrane/Tissue.js" data-commentBlock=" incoming | kill 
+
+Upon receiving such chemical the organelle removes the tissue marker" class="name"> kill </a>
+              <div class="clear"></div>
+              <div class="structure">{<br>}
+              </div>
+              <div class="placeholder"></div>
+            </div>
+            <div class="rightarrow"></div>
+          </div>
+        </div>
+        <div class="span4">
+          <div class="organel">
+            <div class="parent">membrane</div>
+            <div class="name"><a href="javascript: void(0)" data-details="&lt;p&gt;organel | Tissue&lt;/p&gt;
+
+&lt;p&gt;Once constructed with &lt;code&gt;bindTo&lt;/code&gt; value, the organelle will leave a Tissue marker on specific place.
+Any Cells with the same &lt;code&gt;bindTo&lt;/code&gt; value will then be able to self-resolve as part of the same tissue and 
+thereafter to be able to recognize existence of cells from the same system.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;cwd&lt;/code&gt;: Object&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;optional * , Object containing key:value pairs, where all values will be prefixed with &lt;code&gt;process.cwd()&lt;/code&gt; and set with their coressponding keys directly to the DNA of the organelle.&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;captureType&lt;/code&gt; : &quot;Tissue&quot;&lt;/p&gt;
+
+&lt;p&gt;the type of the chemical which the organelle will listen to. Defaults to &lt;code&gt;&quot;Tissue&quot;&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;bindTo&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;when value is provided, the Tissue organelle will write a &lt;code&gt;cell marker&lt;/code&gt; file at &lt;code&gt;%USER_HOME%/.organic/bindToValue/entrypoint.pid&lt;/code&gt; which is used to identify running or improperly stopped cells.&lt;/p&gt;
+
+&lt;p&gt;this represent the name of the tissue to which the cell should be grouped.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;argv&lt;/code&gt; : [ String ]&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default arguments to be used when starting something via the Tissue&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;cellCwd&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default current working directory for the process started via the Tissue&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;cellEnv&lt;/code&gt; : Object&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default process environment once started via the Tissue&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;" data-name="Tissue" data-file="membrane/Tissue.js" data-commentBlock=" organel | Tissue
+
+Once constructed with `bindTo` value, the organelle will leave a Tissue marker on specific place.
+Any Cells with the same `bindTo` value will then be able to self-resolve as part of the same tissue and 
+thereafter to be able to recognize existence of cells from the same system.
+
+* `cwd`: Object
+
+  * optional * , Object containing key:value pairs, where all values will be prefixed with `process.cwd()` and set with their coressponding keys directly to the DNA of the organelle.
+
+
+* `captureType` : &quot;Tissue&quot;
+
+  the type of the chemical which the organelle will listen to. Defaults to `&quot;Tissue&quot;`
+
+* `bindTo` : String
+
+  when value is provided, the Tissue organelle will write a `cell marker` file at `%USER_HOME%/.organic/bindToValue/entrypoint.pid` which is used to identify running or improperly stopped cells.
+
+  this represent the name of the tissue to which the cell should be grouped.
+
+* `argv` : [ String ]
+
+  *optional*, represents the default arguments to be used when starting something via the Tissue
+
+* `cellCwd` : String
+
+  *optional*, represents the default current working directory for the process started via the Tissue
+
+* `cellEnv` : Object
+
+  *optional*, represents the default process environment once started via the Tissue">Tissue</a></div>
+          </div>
+          <div class="organel-defaults">
+            <div class="structure">{<br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;cwd&lt;/code&gt;: Object&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;optional * , Object containing key:value pairs, where all values will be prefixed with &lt;code&gt;process.cwd()&lt;/code&gt; and set with their coressponding keys directly to the DNA of the organelle.&lt;/li&gt;&lt;/ul&gt;" data-name="cwd"><span>cwd : </span></a><span class="label"> Object</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;captureType&lt;/code&gt; : &quot;Tissue&quot;&lt;/p&gt;
+
+&lt;p&gt;the type of the chemical which the organelle will listen to. Defaults to &lt;code&gt;&quot;Tissue&quot;&lt;/code&gt;&lt;/p&gt;" data-name="captureType "><span>captureType  : </span></a><span class="label"> &quot;Tissue&quot;</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;bindTo&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;when value is provided, the Tissue organelle will write a &lt;code&gt;cell marker&lt;/code&gt; file at &lt;code&gt;%USER_HOME%/.organic/bindToValue/entrypoint.pid&lt;/code&gt; which is used to identify running or improperly stopped cells.&lt;/p&gt;
+
+&lt;p&gt;this represent the name of the tissue to which the cell should be grouped.&lt;/p&gt;" data-name="bindTo "><span>bindTo  : </span></a><span class="label"> String</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;argv&lt;/code&gt; : [ String ]&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default arguments to be used when starting something via the Tissue&lt;/p&gt;" data-name="argv "><span>argv  : </span></a><span class="label"> [ String ]</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;cellCwd&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default current working directory for the process started via the Tissue&lt;/p&gt;" data-name="cellCwd "><span>cellCwd  : </span></a><span class="label"> String</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;cellEnv&lt;/code&gt; : Object&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, represents the default process environment once started via the Tissue&lt;/p&gt;" data-name="cellEnv "><span>cellEnv  : </span></a><span class="label"> Object</span><br>}
+            </div>
+          </div>
+        </div>
+        <div class="span4 outgoingList">
+        </div>
+      </div>
+      <hr>
+      <div data-file="plasma/HttpPostCommitHook.js" class="row-fluid organelContainer">
+        <div class="span4 incomingList">
+          <div class="chemicalContainer">
+            <div class="chemical">
+              <div class="magnifier"></div><a href="javascript: void(0);" data-details="&lt;p&gt;incoming | HttpServer &lt;/p&gt;
+
+&lt;p&gt;Once organelle receives HttpServer chemical it will try to mount route handler for triggering any configured chemicals.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;data : ExpressHttpServer instance&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;app : express app&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;" data-name=" HttpServer " data-file="plasma/HttpPostCommitHook.js" data-commentBlock=" incoming | HttpServer 
+
+Once organelle receives HttpServer chemical it will try to mount route handler for triggering any configured chemicals.
+
+* data : ExpressHttpServer instance
+
+  * app : express app" class="name"> HttpServer </a>
+              <div class="clear"></div>
+              <div class="structure">{<br><a href="javascript: void(0)" data-details="&lt;p&gt;data : ExpressHttpServer instance&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;app : express app&lt;/li&gt;&lt;/ul&gt;" data-name="data "><span>data  : </span></a><span class="label"> ExpressHttpServer instance</span><br>}
+              </div>
+              <div class="placeholder"></div>
+            </div>
+            <div class="rightarrow"></div>
+          </div>
+          <div class="chemicalContainer">
+            <div class="chemical">
+              <div class="magnifier"></div><a href="javascript: void(0);" data-details="&lt;p&gt;incoming | HttpPostCommitHook &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;action&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;action&lt;/code&gt; can have value only equal to &lt;code&gt;processPostCommit&lt;/code&gt; , which will instruct the organelle to process the given chemical for triggering emit of any configured actions.&lt;/p&gt;
+
+&lt;p&gt;expected chemical contents further more depending on the configuration are as follows:&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;req&lt;/code&gt; : Object&lt;/p&gt;
+
+&lt;p&gt;plan object or express request object&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;ref&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;reference which could be scanned for existence of &lt;code&gt;triggerOn&lt;/code&gt; value&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;" data-name=" HttpPostCommitHook " data-file="plasma/HttpPostCommitHook.js" data-commentBlock=" incoming | HttpPostCommitHook 
+
+* `action` : String
+
+  `action` can have value only equal to `processPostCommit` , which will instruct the organelle to process the given chemical for triggering emit of any configured actions.
+
+  expected chemical contents further more depending on the configuration are as follows:
+
+* `req` : Object
+
+  plan object or express request object
+  
+  * `ref` : String
+
+    reference which could be scanned for existence of `triggerOn` value" class="name"> HttpPostCommitHook </a>
+              <div class="clear"></div>
+              <div class="structure">{<br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;action&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;action&lt;/code&gt; can have value only equal to &lt;code&gt;processPostCommit&lt;/code&gt; , which will instruct the organelle to process the given chemical for triggering emit of any configured actions.&lt;/p&gt;
+
+&lt;p&gt;expected chemical contents further more depending on the configuration are as follows:&lt;/p&gt;" data-name="action "><span>action  : </span></a><span class="label"> String</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;req&lt;/code&gt; : Object&lt;/p&gt;
+
+&lt;p&gt;plan object or express request object&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;ref&lt;/code&gt; : String&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;reference which could be scanned for existence of &lt;code&gt;triggerOn&lt;/code&gt; value&lt;/p&gt;" data-name="req "><span>req  : </span></a><span class="label"> Object</span><br>}
+              </div>
+              <div class="placeholder"></div>
+            </div>
+            <div class="rightarrow"></div>
+          </div>
+        </div>
+        <div class="span4">
+          <div class="organel">
+            <div class="parent">plasma</div>
+            <div class="name"><a href="javascript: void(0)" data-details="&lt;p&gt;organel | HttpPostCommitHook&lt;/p&gt;
+
+&lt;p&gt;Organelle responsible for emitting Self chemical with &lt;code&gt;action&lt;/code&gt; for self-upgrade. The organelle mounts route handler on express app instance via HttpServer chemical.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;postCommitUrl&lt;/code&gt; : &quot;/post-commit&quot;&lt;/p&gt;
+
+&lt;p&gt;The url route to be mounted on express app.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;triggerChemical&lt;/code&gt; : Self Chemical&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, defaults to:&lt;/p&gt;
+
+&lt;p&gt;{ type: &quot;Self&quot;, action: &quot;upgrade&quot; }&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;triggerOn&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, if provided emitting triggerChemical will happen only if send data contains &lt;code&gt;triggerOn&lt;/code&gt; value.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;" data-name="HttpPostCommitHook" data-file="plasma/HttpPostCommitHook.js" data-commentBlock=" organel | HttpPostCommitHook
+
+Organelle responsible for emitting Self chemical with `action` for self-upgrade. The organelle mounts route handler on express app instance via HttpServer chemical.
+
+* `postCommitUrl` : &quot;/post-commit&quot;
+
+  The url route to be mounted on express app.
+
+* `triggerChemical` : Self Chemical
+
+  *optional*, defaults to:
+    
+      { type: &quot;Self&quot;, action: &quot;upgrade&quot; }
+
+* `triggerOn` : String
+
+  *optional*, if provided emitting triggerChemical will happen only if send data contains `triggerOn` value.">HttpPostCommitHook</a></div>
+          </div>
+          <div class="organel-defaults">
+            <div class="structure">{<br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;postCommitUrl&lt;/code&gt; : &quot;/post-commit&quot;&lt;/p&gt;
+
+&lt;p&gt;The url route to be mounted on express app.&lt;/p&gt;" data-name="postCommitUrl "><span>postCommitUrl  : </span></a><span class="label"> &quot;/post-commit&quot;</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;triggerChemical&lt;/code&gt; : Self Chemical&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, defaults to:&lt;/p&gt;
+
+&lt;p&gt;{ type: &quot;Self&quot;, action: &quot;upgrade&quot; }&lt;/p&gt;" data-name="triggerChemical "><span>triggerChemical  : </span></a><span class="label"> Self Chemical</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;triggerOn&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;optional&lt;/em&gt;, if provided emitting triggerChemical will happen only if send data contains &lt;code&gt;triggerOn&lt;/code&gt; value.&lt;/p&gt;" data-name="triggerOn "><span>triggerOn  : </span></a><span class="label"> String</span><br>}
+            </div>
+          </div>
+        </div>
+        <div class="span4 outgoingList">
+          <div class="chemicalContainer">
+            <div class="chemical">
+              <div class="magnifier"></div><a href="javascript: void(0);" data-details="&lt;p&gt;outgoing | Self &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;action&lt;/code&gt; : &quot;upgrade&quot;&lt;/li&gt;
+&lt;/ul&gt;" data-name=" Self " data-file="plasma/HttpPostCommitHook.js" data-commentBlock=" outgoing | Self 
+
+* `action` : &quot;upgrade&quot;" class="name"> Self </a>
+              <div class="clear"></div>
+              <div class="structure">{<br><a href="javascript: void(0)" data-details="&lt;code&gt;action&lt;/code&gt; : &quot;upgrade&quot;" data-name="action "><span>action  : </span></a><span class="label"> &quot;upgrade&quot;</span><br>}
+              </div>
+              <div class="placeholder"></div>
+            </div>
+            <div class="rightarrow"></div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div data-file="plasma/Self.js" class="row-fluid organelContainer">
+        <div class="span4 incomingList">
+          <div class="chemicalContainer">
+            <div class="chemical">
+              <div class="magnifier"></div><a href="javascript: void(0);" data-details="&lt;p&gt;incoming | Self &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;action&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;startSiblings&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;will start any configured siblings which are not found running.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;restart&lt;/code&gt; &lt;/p&gt;
+
+&lt;p&gt;will emit Tissue start chemical and thereafter will exit the process.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;upgrade&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;will emit Tissue start chemical with configured upgradeCommand and thereafter will self-restart only if upgradeCommand exits with code == 0&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;registerAsService&lt;/code&gt; &lt;/p&gt;
+
+&lt;p&gt;Experimental using &lt;code&gt;servicer&lt;/code&gt; module. Still doesn't works.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;unregisterAsService&lt;/code&gt; &lt;/p&gt;
+
+&lt;p&gt;Experimental using &lt;code&gt;servicer&lt;/code&gt; module. Still doesn't works.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;" data-name=" Self " data-file="plasma/Self.js" data-commentBlock=" incoming | Self 
+
+* `action` : String
+
+  * `startSiblings`
+
+     will start any configured siblings which are not found running.
+
+  * `restart` 
+
+     will emit Tissue start chemical and thereafter will exit the process.
+
+  * `upgrade`
+
+    will emit Tissue start chemical with configured upgradeCommand and thereafter will self-restart only if upgradeCommand exits with code == 0
+
+
+  * `registerAsService` 
+
+     Experimental using `servicer` module. Still doesn't works.
+
+  * `unregisterAsService` 
+
+     Experimental using `servicer` module. Still doesn't works." class="name"> Self </a>
+              <div class="clear"></div>
+              <div class="structure">{<br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;action&lt;/code&gt; : String&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;startSiblings&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;will start any configured siblings which are not found running.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;restart&lt;/code&gt; &lt;/p&gt;
+
+&lt;p&gt;will emit Tissue start chemical and thereafter will exit the process.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;upgrade&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;will emit Tissue start chemical with configured upgradeCommand and thereafter will self-restart only if upgradeCommand exits with code == 0&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;registerAsService&lt;/code&gt; &lt;/p&gt;
+
+&lt;p&gt;Experimental using &lt;code&gt;servicer&lt;/code&gt; module. Still doesn't works.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;unregisterAsService&lt;/code&gt; &lt;/p&gt;
+
+&lt;p&gt;Experimental using &lt;code&gt;servicer&lt;/code&gt; module. Still doesn't works.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;" data-name="action "><span>action  : </span></a><span class="label"> String</span><br>}
+              </div>
+              <div class="placeholder"></div>
+            </div>
+            <div class="rightarrow"></div>
+          </div>
+        </div>
+        <div class="span4">
+          <div class="organel">
+            <div class="parent">plasma</div>
+            <div class="name"><a href="javascript: void(0)" data-details="&lt;p&gt;organel | &lt;/p&gt;
+
+&lt;p&gt;Organelle responsible for managing 'self' of the Cell namely to self-restart, self-upgrade, self-prevent from crashing on exceptions, self-starting any sibling cells.&lt;/p&gt;
+
+&lt;p&gt;This organelle uses Tissue organelle configured with &lt;code&gt;bindTo&lt;/code&gt; to self-daemonize.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;upgradeCommand&lt;/code&gt; : &quot;git pull; npm install&quot;&lt;/p&gt;
+
+&lt;p&gt;command to be executed as shell process upon receiving process signal &quot;SIGUSR1&quot;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;surviveExceptions&lt;/code&gt; : false&lt;/p&gt;
+
+&lt;p&gt;when set to &lt;code&gt;true&lt;/code&gt; , it will prevent the Cell from exiting upon uncaught exceptions. No logging will be added, and if Tissue organelle is attached it will be instructed via &quot;surviveExceptions&quot; chemical to prevent process exit too.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;siblings&lt;/code&gt; : [ Sibling Object ]&lt;/p&gt;
+
+&lt;p&gt;starts as background process any sibling cells not returned via Tissue list&lt;/p&gt;
+
+&lt;h3&gt;Sibling Object&lt;/h3&gt;
+
+&lt;p&gt;{
+    cwd: String // current working directory, defaults to dirname of current nodejs process
+    name: String // filename of Cell's entry point
+    output: Boolean // defaults to undefined, instructs omitting Cell's output logging
+  }&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;tissue&lt;/code&gt; : String
+required to list siblings for starting&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;" data-name="Self" data-file="plasma/Self.js" data-commentBlock=" organel | 
+
+Organelle responsible for managing 'self' of the Cell namely to self-restart, self-upgrade, self-prevent from crashing on exceptions, self-starting any sibling cells.
+
+This organelle uses Tissue organelle configured with `bindTo` to self-daemonize.
+
+* `upgradeCommand` : &quot;git pull; npm install&quot;
+
+  command to be executed as shell process upon receiving process signal &quot;SIGUSR1&quot;.
+
+* `surviveExceptions` : false
+  
+  when set to `true` , it will prevent the Cell from exiting upon uncaught exceptions. No logging will be added, and if Tissue organelle is attached it will be instructed via &quot;surviveExceptions&quot; chemical to prevent process exit too.
+
+* `siblings` : [ Sibling Object ]
+  
+  starts as background process any sibling cells not returned via Tissue list
+
+  ### Sibling Object ###
+
+      {
+        cwd: String // current working directory, defaults to dirname of current nodejs process
+        name: String // filename of Cell's entry point
+        output: Boolean // defaults to undefined, instructs omitting Cell's output logging
+      }
+
+* `tissue` : String
+  required to list siblings for starting">Self</a></div>
+          </div>
+          <div class="organel-defaults">
+            <div class="structure">{<br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;upgradeCommand&lt;/code&gt; : &quot;git pull; npm install&quot;&lt;/p&gt;
+
+&lt;p&gt;command to be executed as shell process upon receiving process signal &quot;SIGUSR1&quot;.&lt;/p&gt;" data-name="upgradeCommand "><span>upgradeCommand  : </span></a><span class="label"> &quot;git pull; npm install&quot;</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;surviveExceptions&lt;/code&gt; : false&lt;/p&gt;
+
+&lt;p&gt;when set to &lt;code&gt;true&lt;/code&gt; , it will prevent the Cell from exiting upon uncaught exceptions. No logging will be added, and if Tissue organelle is attached it will be instructed via &quot;surviveExceptions&quot; chemical to prevent process exit too.&lt;/p&gt;" data-name="surviveExceptions "><span>surviveExceptions  : </span></a><span class="label"> false</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;siblings&lt;/code&gt; : [ Sibling Object ]&lt;/p&gt;
+
+&lt;p&gt;starts as background process any sibling cells not returned via Tissue list&lt;/p&gt;
+
+&lt;h3&gt;Sibling Object&lt;/h3&gt;
+
+&lt;p&gt;{
+    cwd: String // current working directory, defaults to dirname of current nodejs process
+    name: String // filename of Cell's entry point
+    output: Boolean // defaults to undefined, instructs omitting Cell's output logging
+  }&lt;/p&gt;" data-name="siblings "><span>siblings  : </span></a><span class="label"> [ Sibling Object ]</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;&lt;code&gt;tissue&lt;/code&gt; : String
+required to list siblings for starting&lt;/p&gt;" data-name="tissue "><span>tissue  : </span></a><span class="label"> String
+required to list siblings for starting</span><br>}
+            </div>
+          </div>
+        </div>
+        <div class="span4 outgoingList">
+          <div class="chemicalContainer">
+            <div class="chemical">
+              <div class="magnifier"></div><a href="javascript: void(0);" data-details="&lt;p&gt;outgoing | surviveExceptions &lt;/p&gt;
+
+&lt;p&gt;Emitted upon construction, depends on DNA.&lt;/p&gt;" data-name=" surviveExceptions " data-file="plasma/Self.js" data-commentBlock=" outgoing | surviveExceptions 
+
+Emitted upon construction, depends on DNA." class="name"> surviveExceptions </a>
+              <div class="clear"></div>
+              <div class="structure">{<br>}
+              </div>
+              <div class="placeholder"></div>
+            </div>
+            <div class="rightarrow"></div>
+          </div>
+          <div class="chemicalContainer">
+            <div class="chemical">
+              <div class="magnifier"></div><a href="javascript: void(0);" data-details="&lt;p&gt;outgoing | Self &lt;/p&gt;
+
+&lt;p&gt;Emitted only after all siblings are checked and those who are not running has been fired up via Tissue organelle.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;pid : process.pid&lt;/li&gt;
+&lt;li&gt;siblings : [ Started ChildProcess ]&lt;/li&gt;
+&lt;/ul&gt;" data-name=" Self " data-file="plasma/Self.js" data-commentBlock=" outgoing | Self 
+
+Emitted only after all siblings are checked and those who are not running has been fired up via Tissue organelle.
+
+* pid : process.pid
+* siblings : [ Started ChildProcess ]" class="name"> Self </a>
+              <div class="clear"></div>
+              <div class="structure">{<br><a href="javascript: void(0)" data-details="pid : process.pid" data-name="pid "><span>pid  : </span></a><span class="label"> process.pid</span><br><a href="javascript: void(0)" data-details="siblings : [ Started ChildProcess ]" data-name="siblings "><span>siblings  : </span></a><span class="label"> [ Started ChildProcess ]</span><br>}
+              </div>
+              <div class="placeholder"></div>
+            </div>
+            <div class="rightarrow"></div>
+          </div>
+          <div class="chemicalContainer">
+            <div class="chemical">
+              <div class="magnifier"></div><a href="javascript: void(0);" data-details="&lt;p&gt;outgoing | Tissue List &lt;/p&gt;
+
+&lt;p&gt;Emitted Chemical is &quot;Tissue&quot; with structure:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;type: &quot;Tissue&quot;&lt;/li&gt;
+&lt;li&gt;action: &quot;list&quot;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;target: String&lt;/p&gt;
+
+&lt;p&gt;has the value of configured &lt;code&gt;tissue&lt;/code&gt; &lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;" data-name=" Tissue List " data-file="plasma/Self.js" data-commentBlock=" outgoing | Tissue List 
+
+Emitted Chemical is &quot;Tissue&quot; with structure:
+
+* type: &quot;Tissue&quot;
+* action: &quot;list&quot;
+* target: String
+
+  has the value of configured `tissue` " class="name"> Tissue List </a>
+              <div class="clear"></div>
+              <div class="structure">{<br><a href="javascript: void(0)" data-details="type: &quot;Tissue&quot;" data-name="type"><span>type : </span></a><span class="label"> &quot;Tissue&quot;</span><br><a href="javascript: void(0)" data-details="action: &quot;list&quot;" data-name="action"><span>action : </span></a><span class="label"> &quot;list&quot;</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;target: String&lt;/p&gt;
+
+&lt;p&gt;has the value of configured &lt;code&gt;tissue&lt;/code&gt; &lt;/p&gt;" data-name="target"><span>target : </span></a><span class="label"> String</span><br>}
+              </div>
+              <div class="placeholder"></div>
+            </div>
+            <div class="rightarrow"></div>
+          </div>
+          <div class="chemicalContainer">
+            <div class="chemical">
+              <div class="magnifier"></div><a href="javascript: void(0);" data-details="&lt;p&gt;outgoing | Tissue Start &lt;/p&gt;
+
+&lt;p&gt;Emitted Chemical is &quot;Tissue&quot; with structure:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;type: &quot;Tissue&quot;&lt;/li&gt;
+&lt;li&gt;action: &quot;start&quot;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;target: String&lt;/p&gt;
+
+&lt;p&gt;has the value taken from sibling's path resolving.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;" data-name=" Tissue Start " data-file="plasma/Self.js" data-commentBlock=" outgoing | Tissue Start 
+
+Emitted Chemical is &quot;Tissue&quot; with structure:
+
+* type: &quot;Tissue&quot;
+* action: &quot;start&quot;
+* target: String
+
+  has the value taken from sibling's path resolving." class="name"> Tissue Start </a>
+              <div class="clear"></div>
+              <div class="structure">{<br><a href="javascript: void(0)" data-details="type: &quot;Tissue&quot;" data-name="type"><span>type : </span></a><span class="label"> &quot;Tissue&quot;</span><br><a href="javascript: void(0)" data-details="action: &quot;start&quot;" data-name="action"><span>action : </span></a><span class="label"> &quot;start&quot;</span><br><a href="javascript: void(0)" data-details="&lt;p&gt;target: String&lt;/p&gt;
+
+&lt;p&gt;has the value taken from sibling's path resolving.&lt;/p&gt;" data-name="target"><span>target : </span></a><span class="label"> String</span><br>}
+              </div>
+              <div class="placeholder"></div>
+            </div>
+            <div class="rightarrow"></div>
+          </div>
+        </div>
+      </div>
+      <hr>
+    </div>
+    <script src="./code.js"></script>
+  </body>
+</html>
