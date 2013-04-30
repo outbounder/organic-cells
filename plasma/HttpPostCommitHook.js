@@ -1,5 +1,49 @@
 var Organel = require("organic").Organel;
 
+/* organel | HttpPostCommitHook
+
+Organelle responsible for emitting Self chemical with `action` for self-upgrade. The organelle mounts route handler on express app instance via HttpServer chemical.
+
+* `postCommitUrl` : "/post-commit"
+
+  The url route to be mounted on express app.
+
+* `triggerChemical` : Self Chemical
+
+  *optional*, defaults to:
+    
+      { type: "Self", action: "upgrade" }
+
+* `triggerOn` : String
+
+  *optional*, if provided emitting triggerChemical will happen only if send data contains `triggerOn` value.*/
+
+/* incoming | HttpServer 
+
+Once organelle receives HttpServer chemical it will try to mount route handler for triggering any configured chemicals.
+
+* data : ExpressHttpServer instance
+
+  * app : express app*/
+/* incoming | HttpPostCommitHook 
+
+* `action` : String
+
+  `action` can have value only equal to `processPostCommit` , which will instruct the organelle to process the given chemical for triggering emit of any configured actions.
+
+  expected chemical contents further more depending on the configuration are as follows:
+
+* `req` : Object
+
+  plan object or express request object
+  
+  * `ref` : String
+
+    reference which could be scanned for existence of `triggerOn` value*/
+/* outgoing | Self 
+
+* `action` : "upgrade"*/
+
 module.exports = Organel.extend(function HttpPostCommitHook(plasma, config){
   Organel.call(this, plasma, config);
   

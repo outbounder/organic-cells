@@ -5,6 +5,86 @@ var shelljs = require("shelljs");
 var fs = require('fs');
 var async = require('async');
 
+/* organel | 
+
+Organelle responsible for managing 'self' of the Cell namely to self-restart, self-upgrade, self-prevent from crashing on exceptions, self-starting any sibling cells.
+
+This organelle uses Tissue organelle configured with `bindTo` to self-daemonize.
+
+* `upgradeCommand` : "git pull; npm install"
+
+  command to be executed as shell process upon receiving process signal "SIGUSR1".
+
+* `surviveExceptions` : false
+  
+  when set to `true` , it will prevent the Cell from exiting upon uncaught exceptions. No logging will be added, and if Tissue organelle is attached it will be instructed via "surviveExceptions" chemical to prevent process exit too.
+
+* `siblings` : [ Sibling Object ]
+  
+  starts as background process any sibling cells not returned via Tissue list
+
+  ### Sibling Object ###
+
+      {
+        cwd: String // current working directory, defaults to dirname of current nodejs process
+        name: String // filename of Cell's entry point
+        output: Boolean // defaults to undefined, instructs omitting Cell's output logging
+      }
+
+* `tissue` : String
+  required to list siblings for starting*/
+/* incoming | Self 
+
+* `action` : String
+
+  * `startSiblings`
+
+     will start any configured siblings which are not found running.
+
+  * `restart` 
+
+     will emit Tissue start chemical and thereafter will exit the process.
+
+  * `upgrade`
+
+    will emit Tissue start chemical with configured upgradeCommand and thereafter will self-restart only if upgradeCommand exits with code == 0
+
+
+  * `registerAsService` 
+
+     Experimental using `servicer` module. Still doesn't works.
+
+  * `unregisterAsService` 
+
+     Experimental using `servicer` module. Still doesn't works.*/
+/* outgoing | surviveExceptions 
+
+Emitted upon construction, depends on DNA.*/
+/* outgoing | Self 
+
+Emitted only after all siblings are checked and those who are not running has been fired up via Tissue organelle.
+
+* pid : process.pid
+* siblings : [ Started ChildProcess ]*/
+/* outgoing | Tissue List 
+
+Emitted Chemical is "Tissue" with structure:
+
+* type: "Tissue"
+* action: "list"
+* target: String
+
+  has the value of configured `tissue` */
+/* outgoing | Tissue Start 
+
+Emitted Chemical is "Tissue" with structure:
+
+* type: "Tissue"
+* action: "start"
+* target: String
+
+  has the value taken from sibling's path resolving.*/
+
 module.exports = Organel.extend(function Self(plasma, config){
   Organel.call(this, plasma, config);
   if(config.cwd)

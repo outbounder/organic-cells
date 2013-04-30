@@ -6,7 +6,11 @@ var shelljs = require("shelljs");
 var glob = require("glob");
 var async = require('async');
 
-/* organel | 
+/* organel | Tissue
+
+Once constructed with `bindTo` value, the organelle will leave a Tissue marker on specific place.
+Any Cells with the same `bindTo` value will then be able to self-resolve as part of the same tissue and 
+thereafter to be able to recognize existence of cells from the same system.
 
 * `cwd`: Object
 
@@ -68,6 +72,8 @@ var async = require('async');
       * `cellEnv` : Object
 
         *optional*, represents the default process environment once started via the Tissue
+
+      This action returns emitted Chemical callback with data value equal to the spawned child process in detached state.
     
     * **stop**
 
@@ -124,6 +130,15 @@ var async = require('async');
    Depends on `action` value.
 
 */
+
+/* incoming | surviveExceptions 
+
+Tissue organelle listens for such chemical in order to unbind global exceptions trapping. This prevents the organelle from removing the tissue marker upon destroying the cell itself. Thereafter the organelle removes the marker only once `kill` chemical is received.
+
+such chemicals are accepted only when `bindTo` value is provided*/
+/* incoming | kill 
+
+Upon receiving such chemical the organelle removes the tissue marker*/
 
 var getUserHome = function () {
   return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
