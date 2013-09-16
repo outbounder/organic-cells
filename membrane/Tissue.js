@@ -290,7 +290,7 @@ module.exports = Organel.extend(function Tissue(plasma, config){
   },
   list: function(c, sender, callback){
     var root = path.join(getUserHome(),"/.organic");
-    var organicDir = path.join(root, c.target);
+    var organicDir = path.join(root, c.target || "");
     glob(organicDir+"/**/*.*", function(err, files){
       var entries = [];
       files.forEach(function(file){

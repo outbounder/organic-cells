@@ -54,11 +54,13 @@ describe("Tissue", function(){
   })
 
   it("execs a command", function(next){
-    plasma.emit({type: "Tissue", action: "start", exec: "mkdir test"}, this, function(c){
+    plasma.emit({type: "Tissue", action: "start", exec: "mkdir testdir"}, this, function(c){
       expect(c instanceof Error).toBe(false);
-      expect(fs.existsSync(process.cwd()+"/test")).toBe(true);
-      fs.rmdir(process.cwd()+"/test");
-      next();
+      c.data.on("exit", function(){
+        expect(fs.existsSync(process.cwd()+"/test")).toBe(true);
+        fs.rmdirSync(process.cwd()+"/testdir");
+        next();  
+      })
     });
   })
 });
